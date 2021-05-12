@@ -1,0 +1,22 @@
+version: "3.8"
+
+services:
+  db:
+    image: mariadb:latest
+    restart: always
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: parcare
+      MYSQL_USER: admin
+      MYSQL_PASSWORD: 'admin'
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - db-vol:/var/lib/mysql
+  adminer:
+    image: adminer
+    ports:
+      - 8080:8080
+
+volumes:
+  db-vol:
