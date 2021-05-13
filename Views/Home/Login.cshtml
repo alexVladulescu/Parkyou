@@ -1,0 +1,49 @@
+﻿@model AuthenticationModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+@using (Html.BeginForm("LogIn", "Home", FormMethod.Post))
+{
+    <fieldset>
+        <div class="text-center">
+            <h1>Login</h1>
+        </div>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @if (@ViewBag.Message != null)
+        {
+            <div style="border: 1px solid #ff0000">
+                @ViewBag.Message
+            </div>
+        }
+        <table>
+            <tr>
+                <td>@Html.LabelFor(a => a.Username)</td>
+                <td>@Html.TextBoxFor(a => a.Username)</td>
+                <td>@Html.ValidationMessageFor(a => a.Username)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(a => a.Password)</td>
+                <td>@Html.PasswordFor(a => a.Password)</td>
+                <td>@Html.ValidationMessageFor(a => a.Password)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.CheckBoxFor(a => a.KeepLoggedIn)
+                    @Html.Label("Stay Logged in")
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Login" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}

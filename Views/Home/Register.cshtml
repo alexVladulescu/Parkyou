@@ -1,0 +1,60 @@
+﻿@model RegisterViewModel
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+@using (Html.BeginForm("REgister", "Home", FormMethod.Post))
+{
+    <fieldset>
+        <div class="text-center">
+            <h1>Register</h1>
+        </div>
+
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true)
+        @if (@ViewBag.Message != null)
+        {
+            <div style="border: 1px solid #ff0000">
+                @ViewBag.Message
+            </div>
+        }
+        <table>
+            <tr>
+                <td>@Html.LabelFor(r => r.Username)</td>
+                <td>@Html.TextBoxFor(r => r.Username)</td>
+                <td>@Html.ValidationMessageFor(r => r.Username)</td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(r => r.Password)</td>
+                <td>@Html.PasswordFor(r => r.Password)</td>
+                <td>@Html.ValidationMessageFor(r => r.Password)</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Confirm Password")</td>
+                <td>@Html.PasswordFor(r => r.ConfirmPassword)</td>
+                <td>@Html.ValidationMessageFor(r => r.ConfirmPassword)</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("First Name")</td>
+                <td>@Html.TextBoxFor(r => r.FirstName)</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Last Name")</td>
+                <td>@Html.TextBoxFor(r => r.LastName)</td>
+            </tr>
+            <tr>
+                <td>@Html.Label("Email Address")</td>
+                <td>@Html.TextBoxFor(r => r.Email)</td>
+                <td>@Html.ValidationMessageFor(r => r.Email)</td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <input type="submit" value="Register" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </fieldset>
+}
