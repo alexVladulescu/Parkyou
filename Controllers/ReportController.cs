@@ -39,7 +39,7 @@ namespace Parkyou.Controllers
                 Solved = false,
                 Resolution = "",
                 Closed = false,
-                Created = new DateTime(),
+                Created = DateTime.Now,
                 LastModified = null
             };
             bool status = _reportRepository.CreateNewReport(report);

@@ -65,7 +65,7 @@ namespace Parkyou.Repositories
             report.Description = description;
             report.Row = row;
             report.Col = col;
-            report.LastModified = new DateTime();
+            report.LastModified = DateTime.Now;
             _context.SaveChanges();
             return true;
         }
