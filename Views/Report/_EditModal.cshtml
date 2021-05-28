@@ -1,0 +1,59 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Castle.Core.Internal
+@using System.Reflection
+@using System.Reflection.Metadata
+@model Report
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.2.0/papaparse.min.js"></script>
+<script type="text/javascript">
+    $('#editModal').on('show.bs.modal', function (event) {
+        let button = $(event.relatedTarget)
+        let recipient = button.data('whatever')
+        let modal = $(this)
+        modal.find('.modal-title').text('My message ' + recipient)
+        modal.find('.modal-body input').val(recipient)
+    })
+</script>
+
+<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="modalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalLabel">Edit Report</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                @using (Html.BeginForm("EditReport", "Report", FormMethod.Post, new {id = "editModal"}))
+                {
+                    <div class="form-group">
+                        @Html.HiddenFor(m => m.Id)
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Title, new {@class = "col-form-label"})
+                        @Html.TextBoxFor(m => m.Title, new {@class = "form-control"})
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Description, new {@class = "col-form-label"})
+                        @Html.TextBoxFor(m => m.Description, new {@class = "form-control"})
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Row, new {@class = "col-form-label"})
+                        @Html.TextBoxFor(m => m.Row, new {@class = "form-control"})
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Col, new {@class = "col-form-label"})
+                        @Html.TextBoxFor(m => m.Col, new {@class = "form-control"})
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Edit Report</button>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

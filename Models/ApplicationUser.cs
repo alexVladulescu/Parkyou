@@ -6,10 +6,10 @@ namespace Parkyou.Models
 {
     public class ApplicationUser : IdentityUser
     {
-        [System.ComponentModel.DataAnnotations.Key]
+        [Key]
         [Column("Id")]
         [Display(Name = "Id")]
-        [MaxLength(20)]
+        [StringLength(36)]
         public override string Id { get; set; }
         [Required]
         [StringLength(50)]

@@ -4,12 +4,15 @@
     ViewData["Title"] = "Login";
 }
 
+<link rel="stylesheet" href="~/css/center.css" type="text/css">
+
 @using (Html.BeginForm("LogIn", "Home", FormMethod.Post))
 {
     <fieldset>
         <div class="text-center">
             <h1>Login</h1>
         </div>
+        <br><br><br>
 
         @Html.AntiForgeryToken()
         @Html.ValidationSummary(true)
@@ -19,7 +22,7 @@
                 @ViewBag.Message
             </div>
         }
-        <table>
+        <table class="center">
             <tr>
                 <td>@Html.LabelFor(a => a.Username)</td>
                 <td>@Html.TextBoxFor(a => a.Username)</td>

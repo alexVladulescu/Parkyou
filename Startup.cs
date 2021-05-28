@@ -41,7 +41,8 @@ namespace Parkyou
             services.AddTransient<IUserRepository, UserRepository>();
             services.AddTransient<IParkingSpotRepository, ParkingSpotRepository>();
             services.AddTransient<IAdministratorRepository, AdministratorRepository>();
-
+            services.AddTransient<IReportRepository, ReportRepository>();
+            
             services.AddIdentity<ApplicationUser, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders()

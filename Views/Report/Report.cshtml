@@ -1,0 +1,127 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Castle.Core.Internal
+@using System.Reflection
+@using System.Reflection.Metadata
+@model Report
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Report";
+}
+
+<link rel="stylesheet" href="~/css/parking_spots.css">
+<link rel="stylesheet" href="~/css/center.css">
+
+@{
+    var user = UserManager.GetUserAsync(User).Result;
+}
+
+@if (SignInManager.IsSignedIn(User))
+{
+    @if (user.Rol == "Administrator")
+    {
+        <a asp-controller="Report" asp-action="AllReports">Back to Report List</a>
+    }
+    else
+    {
+        <a asp-controller="Report" asp-action="MyReports" asp-route-username=@User.Identity?.Name>Back to Report List</a>
+    }
+    <table class="center">
+        <tr>
+            <td><h4>Title: </h4></td>
+            <td><h4>@Model.Title</h4></td>
+        </tr>
+        <tr>
+            <td><h4>Description: </h4></td>
+            <td style="max-width: 500px; word-wrap: anywhere"><h4>@Model.Description</h4></td>
+        </tr>
+        <tr>
+            <td><h4>Found at: </h4></td>
+            @if (!Model.Row.IsNullOrEmpty() && !Model.Col.IsNullOrEmpty())
+            {
+                <td><h4>@Model.Row@Model.Col</h4></td>
+            }
+            else if (Model.Row.IsNullOrEmpty())
+            {
+                <td><h4>Column @Model.Col</h4></td>
+            }
+            else if (Model.Col.IsNullOrEmpty())
+            {
+                <td><h4>Row @Model.Row</h4></td>
+            }
+            else
+            {
+                <td><h4><i>Not Specified</i></h4></td>
+            }
+        </tr>
+        <tr>
+            <td><h4>Is Solved?</h4></td>
+            <td><h4>@Html.Raw(Model.Solved ? "Yes" : "No")</h4></td>
+        </tr>
+        <tr>
+            <td><h4>Created on:</h4></td>
+            <td><h4>@Html.Raw(Model.Created.ToString("G"))</h4></td>
+        </tr>
+        @if (Model.Solved)
+        {
+            <tr>
+                <td><h4>Resolution:</h4></td>
+                <td><h4>@Model.Resolution</h4></td>
+            </tr>
+            <tr>
+                <td><h4>Is Closed:</h4></td>
+                <td><h4>@Html.Raw(Model.Closed ? "Yes" : "No")</h4></td>
+            </tr>
+        }
+        @if (Model.LastModified == null)
+        {
+            <tr>
+                <td><h4>Last modified on:</h4></td>
+                <td><h4>-</h4></td>
+            </tr>
+        }
+        else
+        {
+            <tr>
+                <td><h4>Last modified on:</h4></td>
+                <td><h4>@Html.Raw(Model.LastModified?.ToString("G"))</h4></td>
+            </tr>
+        }
+        @if (!Model.Solved && !Model.Closed)
+        {
+            <tr>
+                <td></td>
+                @if (user.Rol == "User")
+                {
+                    <partial name="_EditModal"/>
+                    <td><button data-toggle="modal" data-target="#editModal">Edit Report</button></td>
+                }
+                else
+                {
+                    <partial name="_ResolutionModal"/>
+                    <td><button data-toggle="modal" data-target="#resolutionModal">Add Resolution</button></td>
+                }
+            </tr>
+        }
+        @if (!Model.Closed)
+        {
+            <tr>
+                <td></td>
+                @if (user.Rol == "User")
+                {
+                    <td><button><a asp-controller="Report" asp-action="CloseReport" asp-route-id=@Model.Id>Close Report</a></button></td>
+                }
+                else
+                {
+                    <td><button><a asp-controller="Report" asp-action="CloseReportAdmin" asp-route-id=@Model.Id>Close Report</a></button></td>
+                }
+            </tr>
+        }
+    </table>
+    @Html.ValidationSummary(false, "", new{@class = "text-danger"})
+}
+else
+{
+    <h1>You are not logged in!</h1>
+}

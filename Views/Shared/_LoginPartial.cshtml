@@ -10,15 +10,18 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item">
-            <span class="navbar-text text-dark">Hello @User.Identity.Name!</span>
+            <span class="navbar-text text-dark">Hello @user.FirstName @user.LastName!</span>
         </li>
 
         @if (user.Rol == "User")
         {
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">User</a>
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage User Account</a>
+                    <a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a>
+                    <a class="dropdown-item text-dark" asp-controller="ParkingSpots" asp-action="MyParkingSpot">My Parking Spot</a>
+                    <a class="dropdown-item text-dark" asp-controller="Report" asp-action="MyReports" asp-route-username=@user.UserName>My Reports</a>
+                    <a class="dropdown-item text-dark" asp-controller="Report" asp-action="CreateReport">Report an issue</a>
                     <a class="dropdown-item text-dark" onclick="@("window.location.href='" + @Url.Action("LogOut", "Home") + "'");">Logout</a>
                 </div>
             </li>
@@ -26,9 +29,10 @@
         else
         {
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Administrator</a>
+                <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"></a>
                 <div class="dropdown-menu" aria-labelledby="dropdown01">
-                    <a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Administrator Account</a>
+                    <a class="dropdown-item text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Manage Account</a>
+                    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Register">Register administrator</a>
                     <a class="dropdown-item text-dark" onclick="@("window.location.href='" + @Url.Action("LogOut", "Home") + "'");">Logout</a>
                 </div>
             </li>

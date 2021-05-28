@@ -1,0 +1,48 @@
+@using Microsoft.AspNetCore.Identity
+@using Castle.Core.Internal
+@model User
+@inject SignInManager<ApplicationUser> SignInManager
+
+@{
+    ViewData["Title"] = "Find a parking spot";
+}
+
+<link rel="stylesheet" href="~/css/center.css">
+<link rel="stylesheet" href="~/css/customButton.css">
+
+@if (SignInManager.IsSignedIn(User))
+{
+    <br><br><br><br>
+    <form asp-controller="ParkingSpots" asp-action="GetRandomParkingSpotForUser">
+        <table class="center">
+            <tr>
+                <td>
+                    <input type="hidden" name="username" value=@User.Identity?.Name />
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <button class="btn effect01" id="btnSumbit" type="submit">
+                        <span>Get a parking spot</span>
+                    </button>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <br><br><br>
+    <table class="center">
+        @if (Model.ParkSpot == null)
+        {
+            <script>$("#btnSumbit").attr("disabled", false);</script>
+        }
+        else
+        {
+            <script>$("#btnSubmit").attr("disabled", true);</script>
+            <tr>
+                <td><h3>You got a parking spot at: </h3></td>
+                <td></td>
+                <td><h3><b><a asp-controller="ParkingSpots" asp-action="MyParkingSpot">@Model.ParkSpot?.Row@Model.ParkSpot?.Col.ToString()</a></b></h3></td>
+            </tr>
+        }
+    </table>
+}

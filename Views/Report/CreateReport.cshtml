@@ -1,0 +1,44 @@
+﻿@using Microsoft.AspNetCore.Identity
+@model ReportModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Report";
+}
+
+<link rel="stylesheet" href="~/css/center.css">
+
+@using (Html.BeginForm("CreateNewReport","Report"))
+{
+    <table class="center">
+        <tr>
+            <td>@Html.LabelFor(x => x.Title)</td>
+            <td>@Html.TextBoxFor(x => x.Title)</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Description)</td>
+            <td>@Html.TextAreaFor(x => x.Description)</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Found at:</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Row)</td>
+            <td>@Html.DropDownListFor(x => x.Row, new SelectList(Model.RowList))</td>
+        </tr>
+        <tr>
+            <td>@Html.LabelFor(x => x.Col, "Column")</td>
+            <td>@Html.DropDownListFor(x => x.Col, new SelectList(Model.ColList))</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>
+                <input type="hidden" name="ReportedBy", value=@User.Identity?.Name>
+                <input type="submit" value="Create Report"/>
+            </td>
+        </tr>
+        
+    </table>
+}

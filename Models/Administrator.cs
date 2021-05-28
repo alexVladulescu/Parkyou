@@ -6,6 +6,5 @@ namespace Parkyou.Models
     [Table("administrators")]
     public class Administrator : ApplicationUser
     {
-        public virtual List<ParkingSpot> ParkingSpots { get; set; }
     }
 }

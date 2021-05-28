@@ -4,6 +4,8 @@
     ViewData["Title"] = "Register";
 }
 
+<link rel="stylesheet" href="~/css/center.css" type="text/css">
+
 @using (Html.BeginForm("REgister", "Home", FormMethod.Post))
 {
     <fieldset>
@@ -19,7 +21,9 @@
                 @ViewBag.Message
             </div>
         }
-        <table>
+        <br>
+        <br>
+        <table class="center">
             <tr>
                 <td>@Html.LabelFor(r => r.Username)</td>
                 <td>@Html.TextBoxFor(r => r.Username)</td>

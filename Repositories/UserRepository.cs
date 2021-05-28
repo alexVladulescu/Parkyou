@@ -13,7 +13,7 @@ namespace Parkyou.Repositories
 
         public User GetByEmail(string email)
         {
-            return _context.AppUsers.FirstOrDefault(u => u.Email == email.Trim().ToLower());
+            return _context.AppUsers.FirstOrDefault(u => u.Email == email.Trim());
         }
 
         public User GetByUsername(string username)

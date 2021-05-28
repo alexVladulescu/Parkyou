@@ -1,0 +1,125 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Castle.Core.Internal
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.EntityFrameworkCore.Metadata.Internal
+@using Parkyou.Repositories
+@model ParkingSpotsViewModel
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    ViewData["Title"] = "Parking Spots";
+}
+
+<link rel="stylesheet" href="~/css/parking_spots.css">
+<link rel="stylesheet" href="~/css/center.css">
+<link rel="stylesheet" href="~/css/table_filter.css">
+<script data-require="jquery@2.0.3" data-semver="2.0.3" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script src="~/js/table_export.js"></script>
+<script src="~/js/table_filter.js"></script>
+
+
+<h1 class="text-center">All Parking Spots</h1>
+
+@using(Html.BeginForm("AddParkingSpotToUserFromModel", "ParkingSpots", FormMethod.Post))
+{
+    var user = UserManager.GetUserAsync(User).Result;
+    @if (SignInManager.IsSignedIn(User) && user.Rol == "Administrator")
+    {
+        <br>
+        <br>
+        <table class="center">
+            <tr>
+                <td>@Html.LabelFor(x => x.SelectedUser, "User:")</td>
+                <td>@Html.DropDownListFor(x => x.SelectedUser, new SelectList(Model.UserList))</td>
+                <td></td>
+                <td>@Html.LabelFor(x => x.SelectedParkingSpot, "ParkingSpot:")</td>
+                <td>@Html.DropDownListFor(x => x.SelectedParkingSpot, new SelectList(Model.ParkingSpotList))</td>
+                <td></td>
+                <td><input type="submit" value="Add"/></td>
+            </tr>
+        </table>
+    }
+    <br>
+    <br>
+}
+
+<table id="dataTable" class="center grid">
+    <thead>
+        <th index=0>Id
+            <div class="filter"></div></th>
+        <th index=1>Row
+            <div class="filter"></div></th>
+        <th index=2>Column
+            <div class="filter"></div></th>
+        <th index=3>Status
+            <div class="filter"></div></th>
+        <th index=4>User
+            <div class="filter"></div></th>
+        <th index=5>Action</th>
+    </thead>
+    <tbody>
+    @foreach (var parkingSpot in @Model.ParkingSpots)
+    {
+        <tr>
+            <td>@parkingSpot.Id.ToString()</td>
+            <td>@parkingSpot.Row</td>
+            <td>@parkingSpot.Col.ToString()</td>
+            @if (@parkingSpot.Status == 0)
+            {
+                <td>Empty</td>
+            } else if (@parkingSpot.Status == 1)
+            {
+                <td>Reserved</td>
+            }
+            else
+            {
+                <td>Occupied</td>
+            }
+            @if (parkingSpot.UserName != "")
+            {
+                <td>@parkingSpot.UserName</td>
+            }
+            else
+            {
+                <td>None</td>
+            }
+            @{
+                var user = UserManager.GetUserAsync(User).Result;
+            }
+            @if (SignInManager.IsSignedIn(User) && user.Rol == "Administrator" && parkingSpot.UserName != "")
+            {
+                <td><a class="align-content-center" asp-action="RemoveParkingSpotFromUser" asp-route-username="@parkingSpot.UserName" asp-route-parkingSpotId="@parkingSpot.Id">Release</a></td>
+            }
+            else
+            {
+                <td>N/A</td>
+            }
+        </tr>
+    }
+    </tbody>
+</table>
+<br>
+<div class="center">
+    <button style="margin: 5px auto; display: block;" id="btnExportToCsv" type="button" class="btn btn-primary margin">Export to CSV</button>
+</div>
+
+<script>
+    const dataTable = document.getElementById("dataTable");
+    const btnExportToCsv = document.getElementById("btnExportToCsv");
+    btnExportToCsv.addEventListener("click", () => {
+        const exporter = new TableCSVExporter(dataTable);
+        const csvOutput = exporter.convertToCSV();
+        const csvBlob = new Blob([csvOutput], { type: "text/csv" });
+        const blobUrl = URL.createObjectURL(csvBlob);
+        const anchorElement = document.createElement("a");
+
+        anchorElement.href = blobUrl;
+        anchorElement.download = "ParkingSpots.csv";
+        anchorElement.click();
+
+        setTimeout(() => {
+            URL.revokeObjectURL(blobUrl);
+        }, 500);
+    });
+</script>

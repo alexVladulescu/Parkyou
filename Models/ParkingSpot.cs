@@ -10,7 +10,7 @@ namespace Parkyou.Models
         [Required]
         [Column("Row")]
         [Display(Name = "Row")]
-        public int Row { get; set; }
+        public string Row { get; set; }
         [Required]
         [Column("Col")]
         [Display(Name = "Column")]
@@ -19,5 +19,9 @@ namespace Parkyou.Models
         [Column("Status")]
         [Display(Name = "Status")]
         public int Status { get; set; }
+        [Required]
+        [Column("UserName")]
+        [Display(Name = "UserName")]
+        public string UserName { get; set; }
     }
 }

@@ -21,7 +21,6 @@ namespace Parkyou.Controllers
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly ILogger<HomeController> _logger;
-        private int _userId = 1;
 
         public HomeController(ILogger<HomeController> logger,
             IUserRepository userRepository,
@@ -145,21 +144,39 @@ namespace Parkyou.Controllers
                 return Register(vm);
             }
 
-            var user = new User()
+            ApplicationUser currentUser = await _userManager.GetUserAsync(User);
+            ApplicationUser newUser = new ApplicationUser();
+
+            if (currentUser.Rol == "Administrator")
+            { 
+                newUser = new Administrator()
+                {
+                    UserName = vm.Username,
+                    Email = vm.Email,
+                    FirstName = vm.FirstName,
+                    LastName = vm.LastName,
+                    Rol = "Administrator"
+                };
+            }
+            else
             {
-                UserName = vm.Username,
-                Email = vm.Email,
-                FirstName = vm.FirstName,
-                LastName = vm.LastName,
-                Id = _userId.ToString(),
-                Rol = "User"
-            };
-            _userId++;
-            var result = await _userManager.CreateAsync(user, vm.Password);
+                newUser = new User()
+                {
+                    UserName = vm.Username,
+                    Email = vm.Email,
+                    FirstName = vm.FirstName,
+                    LastName = vm.LastName,
+                    Rol = "User"
+                };
+                ((User)newUser).ParkSpot = null;
+            }
+            
+            var result = await _userManager.CreateAsync(newUser, vm.Password);
 
             if (result.Succeeded)
             {
-                await _signInManager.SignInAsync(user, false);
+                if (newUser.Rol == "User")
+                    await _signInManager.SignInAsync(newUser, false);
                 vm.FailedLastTry = 0;
                 return Redirect("Index");
             }

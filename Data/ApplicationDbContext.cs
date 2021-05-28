@@ -26,6 +26,7 @@ namespace Parkyou.Data
                 entity.Property(m => m.NormalizedEmail).HasMaxLength(127);
                 entity.Property(m => m.NormalizedUserName).HasMaxLength(127);
                 entity.Property(m => m.UserName).HasMaxLength(127);
+                entity.Property(m => m.Id).ValueGeneratedOnAdd().HasMaxLength(36);
             });
             modelBuilder.Entity<IdentityRole>(entity =>
             {
@@ -49,10 +50,16 @@ namespace Parkyou.Data
                 entity.Property(m => m.Name).HasMaxLength(127);
             });
             modelBuilder.Entity<ParkingSpot>(entity =>
-                {
-                    entity.Property(m => m.Id).ValueGeneratedOnAdd().HasMaxLength(127);
-                }
-            );
+            {
+                entity.Property(m => m.Id).ValueGeneratedOnAdd().HasMaxLength(127);
+            });
+            modelBuilder.Entity<Report>(entity =>
+            {
+                entity.Property(m => m.Id).ValueGeneratedOnAdd().HasMaxLength(36);
+                entity.Property(m => m.Title).HasMaxLength(100);
+                entity.Property(m => m.Description).HasMaxLength(500);
+                entity.Property(m => m.Resolution).HasMaxLength(500);
+            });
 
             Administrator admin = new Administrator()
             {
@@ -60,7 +67,6 @@ namespace Parkyou.Data
                 NormalizedUserName = "ADMIN",
                 Email = "vladulescualexandru1@gmail.com",
                 NormalizedEmail = "VLADULESCUALEXANDRU1@GMAIL.COM",
-                Id = "0",
                 SecurityStamp = "7f434309-a4d9-48e9-9ebb-8803db794577",
                 EmailConfirmed = true,
                 LockoutEnabled = true,
@@ -71,10 +77,28 @@ namespace Parkyou.Data
             var passwordHash = new PasswordHasher<Administrator>();
             admin.PasswordHash = passwordHash.HashPassword(admin, "Welcome@2021");
             modelBuilder.Entity<Administrator>().HasData(admin);
+
+            int id = 1;
+            foreach (char row in "ABCDEFGHI".ToCharArray())
+            {
+                for (int col = 1; col <= 10; col++)
+                {
+                    ParkingSpot ps = new ParkingSpot()
+                    {
+                        Row = row.ToString(),
+                        Col = col,
+                        Id = id++,
+                        Status = 0,
+                        UserName = ""
+                    };
+                    modelBuilder.Entity<ParkingSpot>().HasData(ps);
+                }
+            }
         }
 
         public DbSet<User> AppUsers { get; set; }
         public DbSet<Administrator> Administrators { get; set; }
         public DbSet<ParkingSpot> ParkingSpots { get; set; }
+        public DbSet<Report> Reports { get; set; }
     }
 }

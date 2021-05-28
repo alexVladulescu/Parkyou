@@ -1,0 +1,65 @@
+﻿@model User
+
+@{
+    ViewData["Title"] = "My Parking Spot";
+}
+
+<link rel="stylesheet" href="~/css/center.css">
+<link rel="stylesheet" href="~/css/customButtonRed.css">
+
+<br><br><br>
+
+    @if (Model.ParkSpot != null)
+    {
+        <table class="center">
+            <tr>
+                <td><h4>Location:</h4></td>
+                <td></td>
+                <td><h4><b>@Model.ParkSpot?.Row@Model.ParkSpot?.Col.ToString()</b></h4></td>
+            </tr>
+            <tr></tr>
+            <tr>
+                <td><h4>Is Occupied?</h4></td>
+                <td></td>
+                <td><h4>@Html.Raw(Model.ParkSpot?.Status == 2 ? "Yes" : "No")</h4></td>
+                @if (Model.ParkSpot?.Status == 1)
+                {
+                    <td>
+                        <form asp-controller="ParkingSpots" asp-action="OccupyParkingSpot">
+                            <input type="hidden" name="username" value=@User.Identity?.Name />
+                            <input type="submit" value="Occupy it" />
+                        </form>
+                    </td>
+                }
+            </tr>
+        </table>
+        <br><br>
+        <table class="center">
+            <tr>
+                <td>
+                    <form asp-controller="ParkingSpots" asp-action="ReleaseParkingSpotFromUser">
+                        <input type="hidden" name="username" value=@User.Identity?.Name />
+                        <button class="btn effect01" id="btnSumbit" type="submit">
+                            <span>Remove parking spot</span>
+                        </button>
+                    </form>
+                </td>
+            </tr>
+        </table>
+    }
+    else
+    {
+        <table class="center">
+            <tr>
+                <td><h3>You have no parking spot</h3></td>
+            </tr>
+        </table>
+        <br><br>
+        <table class="center">
+            <tr>
+                <td>
+                    <input type="button" value="Go get one!" onclick="@("window.location.href='" + @Url.Action("FindParkingSpot", "ParkingSpots") + "'");" />
+                </td>
+            </tr>
+        </table>
+    }

@@ -1,0 +1,56 @@
+﻿@import url(http://weloveiconfonts.com/api/?family=brandico);
+@import url(https://fonts.googleapis.com/css?family=Junge);
+
+
+body{
+    background:url('https://images.reference.com/amg-cms-reference-images/media/big-parking-space_10383836d25254a0.jpg?width=740&height=420&fit=crop&format=pjpg')no-repeat;
+    background-size:cover;
+    text-align:center;
+}
+
+[class*="brandico-"]:before {
+    font-family: 'brandico', sans-serif;
+}
+
+.content{margin:10% auto;}
+
+.welcomeText,.form,.social{ width:100%; }
+
+.welcome{
+    height:100px;
+    position:relative;
+    border-bottom:1px solid;
+    overflow:hidden;
+}
+
+.greet{
+    width:100%;
+    height:100%;
+    position:absolute;
+    top:100%;
+    font-size:50px;
+    text-align:center;
+    line-height:100px;
+    transition:all .5s;
+    color: white;
+}
+
+.subText{
+    width:100%;
+    height:150px;
+    position:relative;
+    font-size:30px;
+    overflow:hidden;
+    color: white;
+}
+.subTexts{
+    width:100%;
+    position:absolute;
+    bottom:100%;
+    text-align:center;
+    overflow:hidden;
+    transition:all .5s;
+}
+
+input:focus{outline:none;}
+
