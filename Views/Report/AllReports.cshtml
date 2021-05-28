@@ -19,6 +19,7 @@
         <th>Title</th>
         <th>Description</th>
         <th>Location</th>
+        <th>Reported by</th>
         <th>Status</th>
         <th>Resolution</th>
         <th>Action</th>
@@ -37,6 +38,7 @@
                     <td>@report.Description.Substring(0, 30)...</td>
                 }
                 <td>@report.Row@report.Col</td>
+                <td>@report.ReportedBy</td>
                 @if (report.Closed)
                 {
                     <td>Closed</td>
